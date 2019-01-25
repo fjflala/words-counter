@@ -1,5 +1,8 @@
 module.exports = {
+  bail: true,
+  verbose: true,
+  transform: {},
   collectCoverageFrom: [
-    'src/**/*.js',
+    'src/words-count.js',
   ],
 };

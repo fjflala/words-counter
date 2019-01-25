@@ -17,7 +17,7 @@ describe('Words Count', () => {
       caseSensitive: true,
     });
 
-    expect(wordsCounter._wordsMap).toBeInstanceOf(Object);
+    expect(wordsCounter._wordsObjects).toBeInstanceOf(Array);
   });
 
   it('Should only map words with more than 2 characters', () => {
@@ -26,7 +26,7 @@ describe('Words Count', () => {
       minCharacters: 2,
     });
 
-    expect(wordsCounter._wordsMap.at).toBeUndefined();
+    expect(wordsCounter.search('at')).toBeNull();
   });
 
   it('Should be case sensitive', () => {
@@ -35,7 +35,7 @@ describe('Words Count', () => {
       minCharacters: 2,
     });
 
-    expect(wordsCounter._wordsMap).toContainEqual({word: 'home', appearances: 1});
+    expect(wordsCounter.search('home')).toEqual({word: 'home', appearances: 1});
   });
 
   it('Should return an integer when you method search', () => {
