@@ -31,7 +31,7 @@ class WordsCounter {
    * @param {string} string 
    */
   _init (string) {
-    if (!string || string === '' || typeof string !== 'string') {
+    if (!string || typeof string !== 'string') {
       throw new Error('First param must be defined and must be a string');
     }
 
@@ -78,6 +78,13 @@ class WordsCounter {
   }
 
   /**
+   * Cleaner method
+   */
+  _cleaner() {
+    this._wordsObjects = [];
+  }
+
+  /**
    * Search method
    * @param {string} word - query
    * @returns {object}
@@ -92,7 +99,7 @@ class WordsCounter {
   }
 
   /**
-   * Most Repeated Words method
+   * Order Ascending method
    * @param {number} offset - default 0
    * @param {number} limit  - default 5
    * @returns {array}
@@ -104,7 +111,7 @@ class WordsCounter {
   }
 
   /**
-   * Less Repeated Words method
+   * Order Descending Words method
    * @param {number} offset - default 0
    * @param {number} limit  - default 5
    * @returns {array}
@@ -113,6 +120,15 @@ class WordsCounter {
     const foundedWords = this._wordsObjects.sort((a, b) => a.appearances - b.appearances);
 
     return foundedWords.slice(offset, limit);
+  }
+
+  /**
+   * Updates the content of the constructor
+   * @param {string} string - The content
+   */
+  update(string = '') {
+    this._cleaner();
+    this._init(string);
   }
 }
 
