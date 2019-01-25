@@ -1,66 +1,118 @@
 /**
  * Module dependencies
  */
-
 const regularExpression = /[^a-z0-9A-Z_äöüßÀÁÂĂÂÃÈÉÊÌÎÍÒÓÔÕȘȚÙÚĂĐĨŨƠàáăââãèéêîìíòóôõùúășțđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềếềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ'’]+/igm;
 
+/**
+ * Represents a word counter
+ */
 class WordsCounter {
+  /**
+   * Create a new WordsCounter
+   * @param {number} string - Text to be counted
+   * @param {object} opts - Config opts
+   * @param {boolean} opts.caseSensitive
+   * @param {number} opts.minCharacters 
+   */
   constructor(string, opts = {}) {
     this.caseSensitive = opts.caseSensitive || false;
     this.minCharacters = opts.minCharacters || 0;
     
     this._string = '';
     this._wordsArray = [];
-    this._wordsMap = [];
+    this._wordsObjects = [];
     
     this._init(string);
   }
   
+  /**
+   * Private method _init
+   * It initializes the library
+   * @param {string} string 
+   */
   _init (string) {
+    if (!string || string === '' || typeof string !== 'string') {
+      throw new Error('First param must be defined and must be a string');
+    }
+
     if (!this.caseSensitive) {
       string = string.toLowerCase();
     }
 
     this._string = string || '';
-    this._wordsArray = this.split();
-    this.map();
+    this._wordsArray = this._split();
+    this._analizeWords();
   }
 
+  /**
+   * Private method _split()
+   * Split the texto into an array
+   * Uses a regex as split param
+   * It also uses minCharacters opts to filter
+   * @returns {array} - Words filtered
+   */
   _split() {
     return this._string.split(regularExpression)
       .filter(word => word.length > this.minCharacters);
   }
 
-  _map() {
+  /**
+   * Private method _analizeWords()
+   * Analizes words in array
+   * Makes a object for each word in array
+   * Count how many times a word appears
+   */
+  _analizeWords() {
     for (let word of this._wordsArray) {
-      const actualWord = this._wordsMap.findIndex(w => w.word === word);
+      const indexWord = this._wordsObjects.findIndex(w => w.word === word);
 
-      if (actualWord < 0) {
-        this._wordsMap.push({
+      if (indexWord < 0) {
+        this._wordsObjects.push({
           word,
           appearances: 1,
         });
-      } else {
-        this._wordsMap[actualWord].appearances++;
+      } else if (this._wordsObjects[indexWord] && this._wordsObjects[indexWord].appearances) {
+        this._wordsObjects[indexWord].appearances++;
       }
     }
   }
 
+  /**
+   * Search method
+   * @param {string} word - query
+   * @returns {object}
+   */
   search(word) {
-    const q = this._wordsMap.find(w => w.word === word);
-    return q || null;
+    if (!word || word === '' || typeof word !== 'string') {
+      throw new Error('Param should be defined and be a string');
+    }
+
+    const foundedWord = this._wordsObjects.find(w => w.word === word);
+    return foundedWord || null;
   }
 
-  mostRepeated(offset = 0, limit = 5) {
-    const q = this._wordsMap.sort((a, b) => b.appearances - a.appearances);
+  /**
+   * Most Repeated Words method
+   * @param {number} offset - default 0
+   * @param {number} limit  - default 5
+   * @returns {array}
+   */
+  orderAscending(offset = 0, limit = 5) {
+    const foundedWords = this._wordsObjects.sort((a, b) => b.appearances - a.appearances);
 
-    return q.slice(offset, limit);
+    return foundedWords.slice(offset, limit);
   }
 
-  lessRepeated(offset = 0, limit = 5) {
-    const q = this._wordsMap.sort((a, b) => a.appearances - b.appearances);
+  /**
+   * Less Repeated Words method
+   * @param {number} offset - default 0
+   * @param {number} limit  - default 5
+   * @returns {array}
+   */
+  orderDescending(offset = 0, limit = 5) {
+    const foundedWords = this._wordsObjects.sort((a, b) => a.appearances - b.appearances);
 
-    return q.slice(offset, limit);
+    return foundedWords.slice(offset, limit);
   }
 }
 
