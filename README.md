@@ -31,3 +31,8 @@ const wordsCounter = new WordsCounter('Home, sweet home!', {
 | orderDescending	| This method will return a list of elements with all the words in the string, and will order them in a descending way	| Limit: Number (default 5) / Offset: Number (default 0) |	wordCounter.orderAscending(offset, limit) |
 |search	 | This method will return the word searched as an Object	| Word: String (Required)	wordCounter.search(word) |
 | update	| This method should update the string	| String: String (Required) |	wordCounter.update(string) |
+
+### Test (It uses jest)
+```
+npm run test
+``` 
