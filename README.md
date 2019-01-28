@@ -7,12 +7,12 @@ Simple package to count how many times a word appears in a string.
 
 ### Install
 ```
-npm install words-counter
+npm install @fjflala/words-counter
 ```
 
 ### Require
 ```
-const WordsCounter = require('words-counter');
+const WordsCounter = require('@fjflala/words-counter');
 ```
 
 ### Create new constructor
